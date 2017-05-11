@@ -5,10 +5,12 @@ using UnityEngine;
 public class PlayerShipController : MonoBehaviour {
 
     Rigidbody2D rb;
+    Animator anim;
 
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -20,7 +22,8 @@ public class PlayerShipController : MonoBehaviour {
 	}
 
     private void FixedUpdate() {
-       if (Input.GetButton("Fire1")) {
+        anim.SetBool("shipIsMoving", Input.GetButton("Fire1"));
+        if (Input.GetButton("Fire1")) {
             rb.AddForce(transform.up);
        }
     }
