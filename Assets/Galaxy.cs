@@ -2,20 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-struct Star {
-    public Vector2 coords { get; private set; }
-    public int seed { get; private set; }
-    public Star(Vector2 coords, int seed) {
-        this.coords = coords;
-        this.seed = seed;
-    }
-}
-
 class Galaxy {
 
     System.Random rand;
-    public List<Star> stars { get; private set; }
-    public Star home { get; private set; }
+    public List<StarSystem> stars { get; private set; }
+    public StarSystem home { get; private set; }
 
     public Galaxy(int numberOfSystems) {
         new Galaxy(numberOfSystems, new System.Random().Next());
@@ -26,7 +17,7 @@ class Galaxy {
         GenerateWorld(numberOfSystems);
     }
 
-    public Star GetRandomStar() {
+    public StarSystem GetRandomStar() {
         int r = rand.Next(stars.Count);
         return stars[r];
     }
@@ -34,7 +25,7 @@ class Galaxy {
     private void GenerateWorld(int numberOfSystems) {
         //Generate Galaxy
         for (int i = 0; i < numberOfSystems; i++) {
-            Star s = GenerateStar(rand);
+            StarSystem s = GenerateStar(rand);
         }
         stars.Sort(
             (l, r) => Vector2.SqrMagnitude(l.coords).CompareTo(Vector2.SqrMagnitude(r.coords))
@@ -42,8 +33,8 @@ class Galaxy {
         home = stars[0];
     }
 
-    public Star GenerateStar(System.Random generator) {
-        return new Star(
+    public StarSystem GenerateStar(System.Random generator) {
+        return new StarSystem(
             new Vector2(generator.Next() - Int32.MaxValue/2, generator.Next() - Int32.MaxValue/2),
             generator.Next()
         );

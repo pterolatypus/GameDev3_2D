@@ -17,8 +17,8 @@ public class GameController : MonoBehaviour {
 		
 	}
 
-    void LoadSystem(Star star) {
-
+    void LoadSystem(StarSystem star) {
+        
     }
 
 }
