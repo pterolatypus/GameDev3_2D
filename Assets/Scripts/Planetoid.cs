@@ -60,6 +60,6 @@ public class Planetoid : Orbital {
     public override void Load() {
         int x = (int) (radius * Mathf.Cos(angle));
         int y = (int)(radius * Mathf.Sin(angle));
-        GameObject.Instantiate(prefab, new Vector3(x, y, 0), Quaternion.Euler(0, 0, rotation)); 
+        gameObject = GameObject.Instantiate(prefab, new Vector3(x, y, 0), Quaternion.Euler(0, 0, rotation)); 
     }
 }

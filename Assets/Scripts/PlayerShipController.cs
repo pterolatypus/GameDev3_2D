@@ -7,6 +7,8 @@ public class PlayerShipController : MonoBehaviour {
     Rigidbody2D rb;
     Animator anim;
     public float thrust = 1f;
+    private float animSpeedMin = 0.5f, animSpeedMax = 2f;
+    private float maxSpeed = 1f;
 
 	// Use this for initialization
 	void Start () {
@@ -26,7 +28,11 @@ public class PlayerShipController : MonoBehaviour {
         anim.SetBool("shipIsMoving", Input.GetButton("Fire1"));
         if (Input.GetButton("Fire1")) {
             rb.AddForce(thrust*transform.up);
-       }
+        }
+        float curSpd = GetComponent<Rigidbody2D>().velocity.magnitude;
+        maxSpeed = Mathf.Max(curSpd, maxSpeed);
+        float animSpeed = animSpeedMin + (curSpd / maxSpeed) * (animSpeedMax - animSpeedMin);
+        anim.SetFloat("animSpeed", animSpeed);
     }
 
     void OnTriggerEnter(Collider other) {
