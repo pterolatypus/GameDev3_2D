@@ -6,6 +6,7 @@ public class PlayerShipController : MonoBehaviour {
 
     Rigidbody2D rb;
     Animator anim;
+    public float thrust = 1f;
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +25,11 @@ public class PlayerShipController : MonoBehaviour {
     private void FixedUpdate() {
         anim.SetBool("shipIsMoving", Input.GetButton("Fire1"));
         if (Input.GetButton("Fire1")) {
-            rb.AddForce(transform.up);
+            rb.AddForce(thrust*transform.up);
        }
+    }
+
+    void OnTriggerEnter(Collider other) {
+        //will depend what kind of object it is
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class Planetoid : Orbital {
+public class Planetoid : Orbital {
 
     public struct PlanetType {
         public string name { get; private set; }
@@ -28,16 +28,14 @@ class Planetoid : Orbital {
         "Technological"
     };
 
-    private int seed, techlevel;
-    private bool isGenerated = false;
-    
+    private int techlevel;
+    private GameObject prefab;
+    private float rotation;
 
-    public Planetoid(int seed) {
-        this.seed = seed;
-    }
+    public Planetoid(int seed) : base(seed) { }
 
-    public bool Generate() {
-        if (isGenerated) return false;
+    new public bool Generate(int orbital) {
+        if (!base.Generate(orbital)) return false;
         var r = new System.Random(seed);
         double val = r.NextDouble();
         float div = 0f;
@@ -54,6 +52,14 @@ class Planetoid : Orbital {
             }
         }
         techlevel = r.Next(techlevels.Length);
+        prefab = Resources.Load("Prefabs/Planets/" + type.name) as GameObject;
+        rotation = (int) (360 * r.NextDouble());
         return true;
+    }
+
+    public override void Load() {
+        int x = (int) (radius * Mathf.Cos(angle));
+        int y = (int)(radius * Mathf.Sin(angle));
+        GameObject.Instantiate(prefab, new Vector3(x, y, 0), Quaternion.Euler(0, 0, rotation)); 
     }
 }

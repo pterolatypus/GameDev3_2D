@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class StarSystem
+public class StarSystem
 {
 
     static readonly String[] sizes = {
@@ -28,6 +28,8 @@ class StarSystem
     private bool isGenerated = false;
     private int temp, size;
     private List<Orbital> satellites = new List<Orbital>();
+    private GameObject starPrefab;
+    private int rotation;
 
 
     public StarSystem(Vector2 coords, int seed) {
@@ -35,7 +37,7 @@ class StarSystem
         this.seed = seed;
     }
 
-    public bool Generate() {
+    private bool Generate() {
         if (isGenerated) return false;
         var rand = new System.Random(seed);
         temp = rand.Next(temps.Length);
@@ -45,10 +47,26 @@ class StarSystem
             double r = rand.NextDouble();
             if (r < 0.5) {
                 Planetoid p = new Planetoid(rand.Next());
-                satellites.Insert(i, p); //not sure if this works, we'll see
+                satellites.Add(p); //not sure if this works, we'll see
+                p.Generate(i);
+            } else {
+                satellites.Add(new EmptyOrbital(0));
             }
         }
+        starPrefab = Resources.Load("Prefabs/Stars/" + temps[temp]) as GameObject;
+        rotation = (int) (360 * rand.NextDouble());
         return true;
     }
 
+    public void Load() {
+        this.Generate();
+        //instantiate all the game objects
+        GameObject star = GameObject.Instantiate(starPrefab, new Vector2 (0,0), Quaternion.Euler(0,0, rotation));
+        var scale = Vector3.one * (size+2)*(size+2);
+        star.transform.localScale = scale;
+        foreach (Orbital obj in satellites) {
+            obj.Load();
+        }
+    }
+    
 }

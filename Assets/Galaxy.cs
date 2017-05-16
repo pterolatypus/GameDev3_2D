@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class Galaxy {
+public class Galaxy {
 
     System.Random rand;
     public List<StarSystem> stars { get; private set; }
     public StarSystem home { get; private set; }
 
-    public Galaxy(int numberOfSystems) {
-        new Galaxy(numberOfSystems, new System.Random().Next());
-    }
+    public Galaxy(int numberOfSystems) : this(numberOfSystems, new System.Random().Next()) { }
 
     public Galaxy(int numberOfSystems, int seed) {
+        stars = new List<StarSystem>();
         rand = new System.Random(seed);
         GenerateWorld(numberOfSystems);
     }
@@ -26,11 +25,13 @@ class Galaxy {
         //Generate Galaxy
         for (int i = 0; i < numberOfSystems; i++) {
             StarSystem s = GenerateStar(rand);
+            stars.Add(s);
         }
         stars.Sort(
             (l, r) => Vector2.SqrMagnitude(l.coords).CompareTo(Vector2.SqrMagnitude(r.coords))
         );
-        home = stars[0];
+        Debug.Log("Generated " + stars.Count + " system(s)");
+        this.home = stars[0];
     }
 
     public StarSystem GenerateStar(System.Random generator) {

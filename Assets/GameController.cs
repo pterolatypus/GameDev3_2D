@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
-    public int numberOfSystems = 1000;
+    public int numberOfSystems = 100;
     Galaxy g;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         g = new Galaxy(numberOfSystems);
         LoadSystem(g.home);
 	}
@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour {
 	}
 
     void LoadSystem(StarSystem star) {
-        
+        star.Load();
     }
 
 }
